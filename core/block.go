@@ -153,7 +153,7 @@ func (b *Block) TotalFees() uint64 {
 	}
 	return total
 }
-.
+
 func (b *Block) Size() int {
 	data, err := b.ToJSON()
 	if err != nil {
