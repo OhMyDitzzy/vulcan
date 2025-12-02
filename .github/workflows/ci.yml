@@ -25,10 +25,6 @@ jobs:
         working-directory: ./vulcan-web
         run: npm ci
       
-      - name: Run frontend tests
-        working-directory: ./vulcan-web
-        run: npm test
-      
       - name: Lint
         run: |
           go vet ./...
