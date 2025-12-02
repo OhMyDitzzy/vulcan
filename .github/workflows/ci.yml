@@ -33,4 +33,44 @@ jobs:
             -C bin vulcan-${{ matrix.goos }}-${{ matrix.goarch }}
 
       - name: Upload builds
-        uses:
+        uses: actions/upload-artifact@v3
+        with:
+          name: builds
+          path: dist/*.tar.gz
+
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download builds
+        uses: actions/download-artifact@v3
+        with:
+          name: builds
+          path: dist
+
+      - name: Generate next tag
+        id: version
+        run: |
+          latest=$(git tag --sort=-v:refname | head -n 1)
+          if [ -z "$latest" ]; then
+            next="v1.0.0"
+          else
+            base=${latest#v}
+            IFS='.' read -r major minor patch <<< "$base"
+            patch=$((patch+1))
+            next="v$major.$minor.$patch"
+          fi
+          echo "tag=$next" >> $GITHUB_OUTPUT
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.version.outputs.tag }}
+          files: dist/*.tar.gz
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Cleanup
+        run: rm -rf dist bin
