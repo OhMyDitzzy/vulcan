@@ -40,8 +40,8 @@ A production-quality mini blockchain implementation with Proof-of-Work consensus
 
 ## Prerequisites
 
-- Go 1.20 or higher
-- Node.js 18 or higher
+- Go 1.25 or higher
+- Node.js 24 or higher
 - Make (optional, for convenience)
 
 ## Quick Start
