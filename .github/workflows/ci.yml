@@ -3,6 +3,9 @@ name: Build & Release
 on:
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -26,13 +29,13 @@ jobs:
           GOOS=${{ matrix.goos }} GOARCH=${{ matrix.goarch }} \
           go build -o bin/vulcan ./cmd/vulcan
 
-      - name: Package tar.gz
+      - name: Package tar.gz (bin + vulcan-web)
         run: |
           PKG_DIR=pkg-${{ matrix.goos }}-${{ matrix.goarch }}
           mkdir -p $PKG_DIR/bin
 
           cp bin/vulcan $PKG_DIR/bin/
-          
+
           cp -r vulcan-web $PKG_DIR/
 
           mkdir -p dist
@@ -43,13 +46,15 @@ jobs:
       - name: Upload builds
         uses: actions/upload-artifact@v4
         with:
-          name: vulcan-${{ matrix.goos }}-${{ matrix.goarch }}
+          name: builds-${{ matrix.goos }}-${{ matrix.goarch }}
           path: dist/*.tar.gz
 
 
   release:
     needs: build
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
 
     steps:
       - name: Download all artifacts
