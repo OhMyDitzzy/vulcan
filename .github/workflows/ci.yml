@@ -26,22 +26,22 @@ jobs:
       - name: Build binary
         run: |
           mkdir -p bin
+          ext=""
+          if [ "${{ matrix.goos }}" = "windows" ]; then
+            ext=".exe"
+          fi
           GOOS=${{ matrix.goos }} GOARCH=${{ matrix.goarch }} \
-          go build -o bin/vulcan ./cmd/vulcan
+          go build -o bin/vulcan-${{ matrix.goos }}-${{ matrix.goarch }}${ext} ./cmd/vulcan
 
-      - name: Package tar.gz (bin + vulcan-web)
+      - name: Package tar.gz
         run: |
-          PKG_DIR=pkg-${{ matrix.goos }}-${{ matrix.goarch }}
-          mkdir -p $PKG_DIR/bin
-
-          cp bin/vulcan $PKG_DIR/bin/
-
-          cp -r vulcan-web $PKG_DIR/
-
-          mkdir -p dist
-          tar -czf dist/vulcan-${{ matrix.goos }}-${{ matrix.goarch }}.tar.gz $PKG_DIR
-
-          rm -rf $PKG_DIR
+         mkdir -p dist
+         ext=""
+         if [ "${{ matrix.goos }}" = "windows" ]; then
+            ext=".exe"
+         fi
+         tar -czf dist/vulcan-${{ matrix.goos }}-${{ matrix.goarch }}.tar.gz \
+         -C bin vulcan-${{ matrix.goos }}-${{ matrix.goarch }}${ext}
 
       - name: Upload builds
         uses: actions/upload-artifact@v4
