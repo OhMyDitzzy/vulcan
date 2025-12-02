@@ -17,7 +17,7 @@ build:
 # Run the node
 run: build
 	@echo "Starting Vulcan node..."
-	$(BUILD_DIR)/$(BINARY_NAME) --api-port=8080 --port=6000 --db-path=$(DATA_DIR)/node1 -difficulty=20
+	$(BUILD_DIR)/$(BINARY_NAME) --api-port=8080 --port=6000 --db-path=$(DATA_DIR)/node1 -difficulty=5
 
 # Run tests
 test:
