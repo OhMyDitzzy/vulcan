@@ -25,23 +25,28 @@ jobs:
 
       - name: Build binary
         run: |
-          mkdir -p bin
+          mkdir -p package/bin
+
           ext=""
           if [ "${{ matrix.goos }}" = "windows" ]; then
             ext=".exe"
           fi
+
           GOOS=${{ matrix.goos }} GOARCH=${{ matrix.goarch }} \
-          go build -o bin/vulcan-${{ matrix.goos }}-${{ matrix.goarch }}${ext} ./cmd/vulcan
+          go build -o package/bin/vulcan${ext} ./cmd/vulcan
+
+      - name: Copy vulcan-web folder
+        run: |
+          cp -r vulcan-web package/vulcan-web
 
       - name: Package tar.gz
         run: |
-         mkdir -p dist
-         ext=""
-         if [ "${{ matrix.goos }}" = "windows" ]; then
-            ext=".exe"
-         fi
-         tar -czf dist/vulcan-${{ matrix.goos }}-${{ matrix.goarch }}.tar.gz \
-         -C bin vulcan-${{ matrix.goos }}-${{ matrix.goarch }}${ext}
+          mkdir -p dist
+          folder="vulcan-${{ matrix.goos }}-${{ matrix.goarch }}"
+          
+          mv package "$folder"
+
+          tar -czf dist/${folder}.tar.gz "$folder"
 
       - name: Upload builds
         uses: actions/upload-artifact@v4
@@ -84,6 +89,3 @@ jobs:
           files: dist/*.tar.gz
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Cleanup
-        run: rm -rf dist bin
