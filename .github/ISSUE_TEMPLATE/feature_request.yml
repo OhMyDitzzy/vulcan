@@ -1,0 +1,40 @@
+name: "✨ Feature Request"
+description: "Propose new features for Vulcan Docs"
+title: "[FEATURE] <short title>"
+labels: [enhancement]
+body:
+  - type: markdown
+    attributes:
+      value: "Thank you for suggesting the feature!”
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: "The problem you want to solve"
+      description: "What problem does this feature solve?”
+      placeholder: "It's hard to..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: "Feature proposal"
+      description: "Describe the features you would like to see added"
+      placeholder: "Add option for..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: "Alternatives under consideration"
+      placeholder: "Another solution that has been tried..."
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: "Additional notes"
+      placeholder: "Additional, screenshots, mockups, etc."

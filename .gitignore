@@ -1,0 +1,31 @@
+# Go build artifacts
+bin/
+*.out
+*.exe
+
+# Go modules
+vendor/
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Data directory (BadgerDB files)
+data/**/MANIFEST
+data/**/KEYREGISTRY
+data/**/DISCARD
+data/**/*.sst
+data/**/*.vlog
+
+# Certificates
+*.crt
+*.key
+
+# Environment variables
+.env
+
+# Docker artifacts
+*.pid

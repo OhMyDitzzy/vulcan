@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  backend:
+    build: .
+    ports:
+      - "8080:8080"
+      - "6000:6000"
+    volumes:
+      - ./data:/root/data
+    environment:
+      - API_PORT=8080
+      - P2P_PORT=6000
+      - DB_PATH=/root/data
+      - DIFFICULTY=4
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend

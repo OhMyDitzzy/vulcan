@@ -1,0 +1,23 @@
+# Go build cache
+bin/
+vendor/
+
+# Git
+.git
+.gitignore
+
+# Logs
+*.log
+
+# Local data directory
+data/
+
+# Node-related (in case)
+node_modules/
+
+# Ignore docker compose
+docker-compose.yml
+
+# OS files
+.DS_Store
+Thumbs.db
